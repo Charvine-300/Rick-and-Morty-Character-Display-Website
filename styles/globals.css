@@ -1,9 +1,28 @@
+@font-face {
+  font-family: 'Schwifty';
+  src: url('../assets/get_schwifty.ttf');
+  font-style: normal;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: #44281d;
+  font-family: 'Schwifty', sans-serif;
+  background-color: #97ce4c;
+}
+
+button {
+  font-family: 'Schwifty', sans-serif;
+}
+
+p {
+  text-transform: capitalize;
+}
+
+ul {
+  list-style-type: none;
 }
 
 a {
@@ -14,3 +33,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/*
+#44281d	(68,40,29) - Brown
+#e4a788	(228,167,136) - Peach
+#f0e14a	(240,225,74) - Yellow
+#97ce4c	(151,206,76) - Green
+#e89ac7	(232,154,199) - Pink 
+*/
