@@ -1,15 +1,76 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import 'animate.css';
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link';
 import imageLoader from '../imageLoader';
-import styles from '../styles/Home.module.css'
+import { useState, useEffect } from 'react';
+import Loader from '../public/ios_loader.png';
+import styles from '../styles/Home.module.css';
+import type { GetServerSideProps, NextPage } from 'next';
 import { Character, GetCharacterResults, Info } from '../types';
+;
 
-
+const defaultEndPoint = 'https:/rickandmortyapi.com/api/character';
 
 const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characters}) => {
-  console.log(info);
-  console.log(characters);
+  //API Routing to different pages
+  const [loading, setLoading] = useState(true);
+  const [results, updateResults] = useState(characters);
+  const [page, updatePage] = useState({
+    ...info,
+    current: defaultEndPoint
+  });
+
+  const { current } = page;
+
+  useEffect(() => {
+    if ( current === defaultEndPoint )  return;
+  
+    async function request() {
+      setLoading(false);
+      const res = await fetch(current)
+      const nextData = await res.json();
+  
+      updatePage({
+        current,
+        ...nextData.info
+      });
+  
+      if ( !nextData.info?.prev ) {
+        updateResults(nextData.results);
+        return;
+      }
+  
+      setLoading(true);
+      updateResults(prev => {
+        return [
+          ...nextData.results
+        ]
+      });
+    }
+  
+    request();
+  }, [current]);
+
+  //Trigger navigations
+  function nextPage() {
+    updatePage(prev => {
+      return {
+        ...prev,
+        current: page?.next
+      }
+    });
+  }
+
+  function prevPage() {
+    updatePage(prev => {
+      return {
+        ...prev,
+        current: page?.prev
+      }
+    });
+  }
+
   
   return (
     <div className={styles.container}>
@@ -27,16 +88,36 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
       </Head>
       <h1 className={styles.first}> Rick and Morty </h1>
       <p className={styles.second}> List of Characters </p>
+     {/*Controls to navigate between pages*/}
+      <div className={styles.controls}>
+        <button value='Prev' onClick={prevPage}> Prev </button>
+        <button value='Next' onClick={nextPage}> Next </button> 
+      </div>
+
       <ul className={styles.footer}>
-        {characters.map((character) => {
+        {!loading && <div className={styles.grid}>
+          <Image 
+            alt='Loader'
+            loader={imageLoader} 
+            unoptimized 
+            src={Loader} 
+            width={200} 
+            height={200}
+          />
+          <h3> Loading... </h3>
+        </div>}
+        {loading && results.map((character) => {
+          //Destructuring the character object
+          const {id, name, image} = character
+
           return (
-            <li key={character.id}>
-              <p> {character.name} </p>
+            <li key={id} className='animate__animated animate__fadeInUp'>
+              <p> {name} </p>
               <Image 
                 loader={imageLoader}
                 unoptimized
-                alt={character.name} 
-                src={character.image} 
+                alt={name} 
+                src={image} 
                 width="200" 
                 height="200"
               />
@@ -44,13 +125,14 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
           );
         })}
       </ul>
+
     </div>
   );
 };
 
 //Fetching data from API and pasing them as props to the index.tsx component
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`https:/rickandmortyapi.com/api/character`)
+  const res = await fetch(defaultEndPoint);
 
   //Assigning the data to interfaces in the types.ts file 
   const { info, results }: GetCharacterResults = await res.json();

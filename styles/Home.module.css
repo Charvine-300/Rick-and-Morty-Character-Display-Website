@@ -24,7 +24,6 @@
 }
 
 .controls {
-  width: 80%;
   display: flex;
   margin: 30px auto;
   justify-content: space-between;
@@ -42,10 +41,11 @@
 }
 
 .footer {
+  width: 90%;
   padding: 0px;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 40px;
+  margin: 40px auto;
   align-items: center;
   justify-content: space-around;
 }
@@ -95,9 +95,10 @@
 
 .grid {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   max-width: 800px;
 }
 
