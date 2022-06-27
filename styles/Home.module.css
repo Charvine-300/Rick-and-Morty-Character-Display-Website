@@ -3,6 +3,18 @@
   text-align: center;
 }
 
+.animation {
+  display: block;
+  margin-top: 30px;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .animation {
+    animation: App-logo-spin infinite 10s linear;
+  }
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;
@@ -28,16 +40,6 @@
   margin: 30px auto;
   justify-content: space-between;
   align-items: center;
-}
-
-.controls button {
-  width: 80px;
-  height: 30px;
-  color: #44281d;
-  border: 3px solid  #44281d;
-  background-color: #f0e14a;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
 }
 
 .footer {
@@ -68,8 +70,8 @@
 }
 
 .title {
-  margin: 0;
-  line-height: 1.15;
+  margin: 30px 0px;
+  line-height: 110px;
   font-size: 4rem;
 }
 

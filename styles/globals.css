@@ -1,3 +1,21 @@
+:root {
+  --scrollbar-thumb: #f0e14a;
+  --scrollbar-track: #44281d;
+}
+
+*::-webkit-scrollbar {
+  width: 0.6875rem;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 0.9375rem;
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 0.9375rem;
+  background: var(--scrollbar-thumb);
+}
+
 @font-face {
   font-family: 'Schwifty';
   src: url('../assets/get_schwifty.ttf');
@@ -8,13 +26,23 @@ html,
 body {
   padding: 0;
   margin: 0;
+  height: auto;
   color: #44281d;
   font-family: 'Schwifty', sans-serif;
   background-color: #97ce4c;
+  background-image: linear-gradient(180deg, #97ce4c, #e89ac7);
 }
 
 button {
   font-family: 'Schwifty', sans-serif;
+  width: 80px;
+  height: 30px;
+  color: #44281d;
+  margin-bottom: 40px;
+  border: 3px solid  #44281d;
+  background-color: #f0e14a;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 p {

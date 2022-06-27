@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
 import imageLoader from '../imageLoader';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Loader from '../public/ios_loader.png';
 import styles from '../styles/Home.module.css';
 import type { GetServerSideProps, NextPage } from 'next';
@@ -13,9 +13,12 @@ import { Character, GetCharacterResults, Info } from '../types';
 const defaultEndPoint = 'https:/rickandmortyapi.com/api/character';
 
 const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characters}) => {
-  //API Routing to different pages
+  var counter = useRef(0);
   const [loading, setLoading] = useState(true);
   const [results, updateResults] = useState(characters);
+
+
+  //API Routing to different pages
   const [page, updatePage] = useState({
     ...info,
     current: defaultEndPoint
@@ -54,6 +57,8 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
 
   //Trigger navigations
   function nextPage() {
+    counter.current = 0;
+
     updatePage(prev => {
       return {
         ...prev,
@@ -63,6 +68,8 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
   }
 
   function prevPage() {
+    counter.current = 0;
+
     updatePage(prev => {
       return {
         ...prev,
@@ -83,7 +90,7 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
         <link 
           rel="icon" 
           sizes='32X32'
-          href="/logo.png" 
+          href="/good_favicon.ico" 
         />
       </Head>
       <h1 className={styles.first}> Rick and Morty </h1>
@@ -103,25 +110,28 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
             src={Loader} 
             width={200} 
             height={200}
+            className={styles.animation}
           />
           <h3> Loading... </h3>
         </div>}
         {loading && results.map((character) => {
           //Destructuring the character object
           const {id, name, image} = character
-
           return (
-            <li key={id} className='animate__animated animate__fadeInUp'>
-              <p> {name} </p>
-              <Image 
-                loader={imageLoader}
-                unoptimized
-                alt={name} 
-                src={image} 
-                width="200" 
-                height="200"
-              />
-            </li>
+            <Link key={id} href={`/character/${id}`}>
+              <li key={id} className={`animate__animated animate__fadeInUp`}>
+                <p> {name} </p>
+                <Image 
+                  priority
+                  loader={imageLoader}
+                  unoptimized
+                  alt={name} 
+                  src={image} 
+                  width="200" 
+                  height="200"
+                />
+              </li>
+            </Link>
           );
         })}
       </ul>
