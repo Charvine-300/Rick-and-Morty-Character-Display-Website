@@ -70,7 +70,7 @@ const Home: NextPage<{ info: Info, characters: Character[] }> = ({info, characte
   function prevPage() {
     counter.current = 0;
 
-    updatePage(prev => {
+    updatePage((prev: any) => {
       return {
         ...prev,
         current: page?.prev
